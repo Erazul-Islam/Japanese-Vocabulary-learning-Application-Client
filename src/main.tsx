@@ -5,6 +5,10 @@ import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Root from './root/Root'
+import Lesson from './pages/lessions/Lesson'
+import Tutorials from './pages/tutorials/Tutorials'
+import Login from './pages/Login/Login'
+import Signup from './pages/Signup/Signup'
 
 
 const router = createBrowserRouter([
@@ -13,10 +17,22 @@ const router = createBrowserRouter([
     element: <Root></Root>,
     // errorElement: <Error />,
     children: [
-      // {
-      //   path: '/',
-      //   element: <Home />
-      // },
+      {
+        path: '/lessions',
+        element: <Lesson />
+      },
+      {
+        path: '/tutorials',
+        element: <Tutorials />
+      },
+      {
+        path: '/login',
+        element: <Login />
+      },
+      {
+        path: '/signup',
+        element: <Signup />
+      },
     ]
   },
   // {

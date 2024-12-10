@@ -9,7 +9,6 @@ import {
   } from '@reduxjs/toolkit/query/react';
   import { RootState } from '../store';
 import { logout, setUser } from '../feature/auth/auth.slice';
-
   
   const baseQuery = fetchBaseQuery({
     // baseUrl: 'https://rental-bike-service.vercel.app/api',
@@ -43,7 +42,7 @@ import { logout, setUser } from '../feature/auth/auth.slice';
       //* Send Refresh
       console.log('Sending refresh token');
   
-      const res = await fetch('https://project-three-ashen-63.vercel.app/api/auth/refresh-token', {
+      const res = await fetch('http://localhost:5000/api/auth/refresh-token', {
         method: 'POST',
         credentials: 'include',
       });
