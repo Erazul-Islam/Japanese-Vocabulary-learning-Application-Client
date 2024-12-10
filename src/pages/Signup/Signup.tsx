@@ -4,12 +4,6 @@ import { useSignupMutation } from '../../redux/feature/auth/authSignup';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'antd';
 
-// _id: string;
-//     name: string,
-//     email: string,
-//     password: string,
-//     photo : string
-
 const Signup = () => {
 
     const navigate = useNavigate()
@@ -17,7 +11,7 @@ const Signup = () => {
     const { register, handleSubmit, formState: { isSubmitting } } = useForm<FieldValues>()
 
     const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
-        console.log(data)
+        console.log('data',data)
 
         try {
             const userInfo = {

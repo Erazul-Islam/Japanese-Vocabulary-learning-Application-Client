@@ -19,7 +19,7 @@ type TFormProps = {
     children: ReactNode;
 } & TFormConfig;
 
-const BikeForm = ({
+const LanguageForm = ({
     onSubmit,
     children,
     defaultValues,
@@ -51,4 +51,4 @@ const BikeForm = ({
     );
 };
 
-export default BikeForm;
+export default LanguageForm;
