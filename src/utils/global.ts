@@ -20,8 +20,18 @@ export type TResponse<T> = {
 export type TLession = {
     LessionName : string,
     LessionNumber : number,
-    description : string
 }
+
+export interface IVocabulary {
+    word: string;
+    pronunciation: string; 
+    whenToSay: string; 
+    lessonNo: number; 
+    adminEmail: string; 
+    userId : string,
+    userName : string
+  }
+  
 
 export interface TUser {
     _id: string;
