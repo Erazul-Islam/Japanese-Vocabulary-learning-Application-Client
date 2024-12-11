@@ -9,6 +9,7 @@ import Lesson from './pages/lessions/Lesson'
 import Tutorials from './pages/tutorials/Tutorials'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
+import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute'
 
 
 const router = createBrowserRouter([
@@ -19,11 +20,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/lessions',
-        element: <Lesson />
+        element: <ProtectedRoute>
+          <Lesson />
+        </ProtectedRoute>
       },
       {
         path: '/tutorials',
-        element: <Tutorials />
+        element: <ProtectedRoute>
+          <Tutorials />
+        </ProtectedRoute>
       },
       {
         path: '/login',
@@ -112,8 +117,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-      <Provider store={store}>
-              <RouterProvider router={router}></RouterProvider>
-      </Provider>
+    <Provider store={store}>
+      <RouterProvider router={router}></RouterProvider>
+    </Provider>
   </StrictMode>,
 )

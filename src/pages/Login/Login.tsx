@@ -44,10 +44,10 @@ const Login = () => {
     }
 
     return (
-        <div className="h-screen flex justify-center items-center  dark:bg-navy-900 transition-colors duration-200">
+        <div className="h-screen flex justify-center items-center transition-colors duration-200">
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="bg-white dark:bg-teal-800 p-10 rounded-lg shadow-lg w-96 h-auto space-y-8 transition-colors duration-200"
+                className="bg-[#001529] text-white p-10 rounded-lg shadow-lg w-96 h-auto space-y-8 transition-colors duration-200"
             >
                 <h2 className="text-blue-800 dark:text-teal-200 text-3xl font-semibold text-center">Login</h2>
 

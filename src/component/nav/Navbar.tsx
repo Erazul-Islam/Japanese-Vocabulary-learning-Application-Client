@@ -2,10 +2,27 @@ import React, { useState } from "react";
 import { Menu, Drawer, Button } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { logout, useCurrentToken } from "../../redux/feature/auth/auth.slice";
+import { verifyToken } from "../../utils/verifyToken";
 
 const Navbar: React.FC = () => {
   const [visible, setVisible] = useState(false);
 
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
+  const token = useAppSelector(useCurrentToken);
+  let user;
+
+  if (token) {
+    user = verifyToken(token);
+  }
+
+  console.log(user)
 
   const showDrawer = () => setVisible(true);
   const closeDrawer = () => setVisible(false);
@@ -14,8 +31,6 @@ const Navbar: React.FC = () => {
     { key: "dashboard", label: "Dashboard" },
     { key: "lessions", label: "Lessions" },
     { key: "tutorials", label: "Tutorials" },
-    { key: "login", label: "Login" },
-    { key: "signup", label: "Register" },
   ];
 
   return (
@@ -33,6 +48,12 @@ const Navbar: React.FC = () => {
             label: <Link to={`/${item.key}`}>{item.label}</Link>,
           }))}
         />
+
+        <div>
+          {user ? <div className='cursor-pointer' onClick={handleLogout}>Logout</div> : <Link color="foreground" to="/login">
+            Login
+          </Link>}
+        </div>
 
         <Button
           icon={<MenuOutlined />}
