@@ -1,8 +1,9 @@
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
-import { useSignupMutation } from '../../redux/feature/auth/authSignup';
+
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button, notification } from 'antd';
+import { useSignupMutation } from '../../redux/feature/auth/authSignup';
 
 const Signup = () => {
 
@@ -11,14 +12,14 @@ const Signup = () => {
     const { register, handleSubmit, formState: { isSubmitting } } = useForm<FieldValues>()
 
     const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
-        console.log('data',data)
+
 
         try {
             const userInfo = {
-                email: data.email,
-                password: data.password,
-                name: data.name,
-                photo: data.photo,
+                email : data.email,
+                name : data.name,
+                photo : data.photo,
+                password : data.password,
                 role: 'USER',
             }
             console.log(userInfo)
@@ -26,11 +27,10 @@ const Signup = () => {
             console.log(res.data)
 
 
-            Swal.fire({
-                title: "Good job!",
-                text: "Sign up Successfully",
-                icon: "success"
-            });
+            notification.success({
+                message : "Wow !!",
+                description : "Sign up succesfull"
+            })
 
             navigate('/login')
         } catch {
@@ -81,7 +81,7 @@ const Signup = () => {
                     />
 
                     <Button
-                        type="link"
+                        htmlType="submit"
                         color="primary"
                         disabled={isSubmitting}
                         className="w-full py-3 mt-4 bg-blue-600 dark:bg-teal-600 text-white rounded-md hover:bg-blue-700 dark:hover:bg-teal-500 transition duration-200"
