@@ -1,7 +1,7 @@
 import React from "react";
-import { Avatar, Layout, Menu, } from "antd";
+import {  Layout, Menu, } from "antd";
 import {
-    UserOutlined,
+
     DashboardOutlined,
     SettingOutlined,
     LogoutOutlined,
@@ -20,8 +20,7 @@ const AdminDashboard: React.FC = () => {
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible>
                 <div className="logo" style={{ padding: '16px', textAlign: 'center' }}>
-                    <Avatar size="large" icon={<UserOutlined />} />
-                    <h2 style={{ color: 'white', marginTop: '8px' }}>{user?.name}</h2>
+                    <img className="w-20 lg:ml-10 h-20 rounded-full" src={user?.photo} alt="" />
                 </div>
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['profile']}>
                     <Menu.Item key="profile" icon={<DashboardOutlined />}>
@@ -46,7 +45,7 @@ const AdminDashboard: React.FC = () => {
             </Sider>
             <Layout>
                 <Header style={{ padding: 0 }}>
-                    <div style={{ padding: '0 16px', fontSize: '24px', fontWeight: 'bold' }}>
+                    <div style={{ padding: '0 16px', fontSize: '24px', fontWeight: 'bold',color:'white' }}>
                         Welcome {user?.name}
                     </div>
                 </Header>

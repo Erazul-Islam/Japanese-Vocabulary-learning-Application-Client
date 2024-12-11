@@ -1,23 +1,23 @@
 import { notification } from "antd";
-import { useCreateLessonMutation } from "../../../redux/feature/Endpoints/EndPoint"
+import { useCreateLessonMutation, useGetAllLessonsQuery } from "../../../redux/feature/Endpoints/EndPoint"
 import { Form, Input, Button} from "antd";
 
 const AddLesson = () => {
 
     const [form] = Form.useForm();
     const [createLesson, { isLoading }] = useCreateLessonMutation();
+    const {refetch} = useGetAllLessonsQuery(null)
 
     const handleSubmit = async (values: { LessionName: string; LessionNumber: number }) => {
         try {
-            // Call the createLesson mutation with form values
+            
             const response = await createLesson(values).unwrap();
+            refetch()
             notification.success({
                 message : "Wow",
                 description : "great"
             })
             console.log("Response:", response);
-
-            // Reset the form after successful submission
             form.resetFields();
         } catch (error) {
             console.error("Error creating lesson:", error);
