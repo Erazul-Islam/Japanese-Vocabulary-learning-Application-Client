@@ -1,9 +1,10 @@
 import { Button, Form, Input, notification, Table, Tag } from "antd"
 import { useAppSelector } from "../../../redux/hook"
 import { RootState } from "../../../redux/store"
-import { useCreateVocabularyMutation, useGetAllLessonsQuery } from "../../../redux/feature/Endpoints/EndPoint"
+import {  useGetAllLessonsQuery } from "../../../redux/feature/Endpoints/EndPoint"
 import { IVocabulary } from "../../../utils/global"
-// import axios from "axios"
+import axios from "axios"
+import { useCurrentToken } from "../../../redux/feature/auth/auth.slice"
 
 
 const AddVocabulary = () => {
@@ -11,22 +12,31 @@ const AddVocabulary = () => {
     const user = useAppSelector((state: RootState) => state.auth.user)
 
     const [form] = Form.useForm();
-    const [createVocabulary] = useCreateVocabularyMutation()
+
     const { data, isLoading: lessonsLoading } = useGetAllLessonsQuery(null)
+    const token = useAppSelector(useCurrentToken);
 
     const handleAddVocabulary = async (lessonId: string, values: IVocabulary) => {
         console.log(lessonId)
-
-        const vocabulary = {
-            ...values,
-            adminEmail: user?.email,
-            userId: user?._id,
-            userName: user?.name,
-        };
-        console.log(vocabulary)
         try {
-            const res = await axios.post(`http://localhost:5000/api/lession/${lessonId}/add-vocabulary`, {vocabulary})
-            // const res = await createVocabulary({lessonId,vocabulary}).unwrap()
+            const res = await axios.post(`http://localhost:5000/api/lession/${lessonId}/add-vocabulary`, {
+                vocabulary: [
+                    {
+                        word: values.word,
+                        pronunciation: values.pronunciation,
+                        whenToSay: values.whenToSay,
+                        lessonNo: values.lessonNo,
+                        adminEmail: user?.email,
+                        userId: user?._id,
+                        userName: user?.name,
+                    },
+                ],
+            },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
 
             console.log(res)
             notification.success({
@@ -86,10 +96,9 @@ const AddVocabulary = () => {
     const showModal = (lessonsId: string) => {
         console.log(lessonsId)
         form.setFieldsValue({
-            word: "f",
-            pronunciation: "g",
-            whenToSay: "h",
-            lessonNo: 1,
+            word: "",
+            pronunciation: "",
+            whenToSay: "",
         });
 
         notification.info({

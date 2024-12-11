@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { Table, Button, Space, Select, message } from "antd";
+import { Table, Button, Space, Select, message, Form, Modal, Input } from "antd";
 import { useDeleteVocabularyMutation, useGetAllLessonsQuery } from "../../../redux/feature/Endpoints/EndPoint";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { useAppSelector } from "../../../redux/hook";
+import { useCurrentToken } from "../../../redux/feature/auth/auth.slice";
 
 const { Option } = Select;
 
@@ -10,6 +13,12 @@ const VocabularyManagement = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [filterLessonNo, setFilterLessonNo] = useState(null);
     const [deleteVocabulary] = useDeleteVocabularyMutation()
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [currentVocabulary, setCurrentVocabulary] = useState(null);
+    const [currentLessontId, setCurrentLessonId] = useState<string | null>(null);
+    const [currentVocabularytId, setCurrentVocabularyId] = useState<string | null>(null);
+    const [form] = Form.useForm();
+    const token = useAppSelector(useCurrentToken);
 
 
     const vocabularies = data?.data?.map(lesson => ({
@@ -18,8 +27,6 @@ const VocabularyManagement = () => {
     })).flatMap(lesson => lesson.vocabulary) || [];
 
     const handleDelete = (id: string, vocabularyId: string) => {
-        console.log("lessonid", id)
-        console.log("vocabulary", vocabularyId)
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -32,15 +39,15 @@ const VocabularyManagement = () => {
             if (result.isConfirmed) {
                 try {
                     deleteVocabulary({ id, vocabularyId })
-                    .unwrap()
-                    .then(() => {
-                        refetch();
-                        Swal.fire({
-                            title: "Deleted!",
-                            text: "Vocabulary successfully deleted.",
-                            icon: "success",
-                        });
-                    })
+                        .unwrap()
+                        .then(() => {
+                            refetch();
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Vocabulary successfully deleted.",
+                                icon: "success",
+                            });
+                        })
                 } catch (err) {
                     console.log(err)
                     message.error("Error")
@@ -49,11 +56,54 @@ const VocabularyManagement = () => {
         });
     };
 
-    const handleUpdate = (id: string) => {
-        console.log("Update Vocabulary ID: ", id);
+    const handleEdit = (lessonId: string, vocabularyId: string) => {
+        // const vocabulary = vocabularies.find((vocab) => vocab._id === vocabularyId);
+        setCurrentLessonId(lessonId);
+        setCurrentVocabularyId(vocabularyId);
+        // setCurrentVocabulary(vocabulary);
+        setIsModalVisible(true);
     };
 
-    // Filter data based on selected LessonNo
+    const handleCancel = () => {
+        setIsModalVisible(false);
+        setCurrentVocabulary(null);
+        form.resetFields();
+    };
+
+
+    const handleUpdate = async (values) => {
+
+        try {
+            const res = await axios.put(
+                `http://localhost:5000/api/lession/${currentLessontId}/vocabulary/${currentVocabularytId}`,
+                {
+                    vocabulary: [
+                        {
+                            word: values.word,
+                            pronunciation: values.pronunciation,
+                            whenToSay: values.whenToSay,
+                            lessonNo: values.lessonNo,
+                        },
+                    ],
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            console.log(res)
+            refetch();
+            message.success("Vocabulary updated successfully!");
+            handleCancel();
+        } catch (error) {
+            console.error("Update failed:", error);
+            message.error("Failed to update vocabulary. Please try again.");
+        }
+    };
+
+
+
     const handleFilterChange = (value) => {
         setFilterLessonNo(value);
         if (value) {
@@ -63,7 +113,6 @@ const VocabularyManagement = () => {
         }
     };
 
-    // Define columns for the table
     const columns = [
         {
             title: "Word",
@@ -97,7 +146,6 @@ const VocabularyManagement = () => {
             title: "Actions",
             key: "actions",
             render: (_, record) => {
-                // Find the corresponding lessonId for this vocabulary
                 const lesson = data?.data?.find((lesson) =>
                     lesson.vocabulary.some((vocab) => vocab._id === record._id)
                 );
@@ -105,7 +153,7 @@ const VocabularyManagement = () => {
 
                 return (
                     <Space>
-                        <Button onClick={() => handleUpdate(record._id)} type="primary">Update</Button>
+                        <Button onClick={() => handleEdit(lessonId, record._id)} type="primary">Update</Button>
                         <Button onClick={() => handleDelete(lessonId, record._id)} type="primary">Delete</Button>
                     </Space>
                 );
@@ -137,6 +185,49 @@ const VocabularyManagement = () => {
                 rowKey="_id"
                 scroll={{ x: true }}
             />
+
+            <Modal
+                title="Update Vocabulary"
+                open={isModalVisible}
+                onCancel={handleCancel}
+                onOk={() => form.submit()}
+                okText="Update"
+                cancelText="Cancel"
+            >
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={handleUpdate}
+                    initialValues={currentVocabulary}
+                >
+                    <Form.Item
+                        label="Word"
+                        name="word"
+
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Pronunciation"
+                        name="pronunciation"
+
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="When to Say"
+                        name="whenToSay"
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Lesson No"
+                        name="lessonNo"
+                    >
+                        <Input />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div>
     );
 };
