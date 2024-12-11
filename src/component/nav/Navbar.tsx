@@ -27,19 +27,30 @@ const Navbar: React.FC = () => {
   const showDrawer = () => setVisible(true);
   const closeDrawer = () => setVisible(false);
 
-  const menuItems = [
-    { key: "dashboard", label: "Dashboard" },
-    { key: "lessions", label: "Lessions" },
+  const commonItems = [
+    { key: "lessions", label: "Lessons" },
     { key: "tutorials", label: "Tutorials" },
   ];
+
+  const adminItems = [
+    { key: "admin/dashboard", label: "Dashboard" },
+    // { key: "admin/dashboard/lesson-management", label: "Lesson" },
+  ];
+
+  const userItems = [
+    { key: "user/profile", label: "User Profile" },
+  ];
+
+  const menuItems = user?.role === "ADMIN"
+    ? [...commonItems, ...adminItems]
+    : [...commonItems, ...userItems];
+
 
   return (
     <nav className="bg-white ">
       <div className="container mx-auto px-4 flex justify-between items-center h-16">
 
         <div className="text-xl font-bold text-indigo-600">MyLogo</div>
-
-
         <Menu
           mode="horizontal"
           className="hidden md:flex"

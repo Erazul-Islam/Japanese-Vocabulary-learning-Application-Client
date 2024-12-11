@@ -23,6 +23,16 @@ export type TLession = {
     description : string
 }
 
+export interface TUser {
+    _id: string;
+    name: string,
+    email: string,
+    password: string,
+    photo : string
+    createdAt: Date,
+    updatedAt: Date,
+    role: 'ADMIN' | 'USER'
+};
   
 
 export type TResponseRedux<T> = TResponse<T> & BaseQueryApi;

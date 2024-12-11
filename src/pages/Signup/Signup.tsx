@@ -13,23 +13,31 @@ const Signup = () => {
 
     const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
 
+        console.log(data)
+
+        const formData = new FormData();
+        formData.append('data', JSON.stringify({
+            email: data.email,
+            name: data.name,
+            password: data.password,
+            role: 'USER',
+        }));
+
+        if (data.photo[0]) {
+            formData.append('photo', data.photo[0]);
+        }
+
+        console.log(formData)
 
         try {
-            const userInfo = {
-                email : data.email,
-                name : data.name,
-                photo : data.photo,
-                password : data.password,
-                role: 'USER',
-            }
-            console.log(userInfo)
-            const res = await signup(userInfo).unwrap()
+           
+            const res = await signup(formData).unwrap()
             console.log(res.data)
 
 
             notification.success({
-                message : "Wow !!",
-                description : "Sign up succesfull"
+                message: "Wow !!",
+                description: "Sign up succesfull"
             })
 
             navigate('/login')
@@ -76,7 +84,7 @@ const Signup = () => {
                     <input
                         className="w-full px-4 py-3 bg-blue-100 dark:bg-teal-700 text-blue-800 dark:text-teal-100 placeholder-blue-400 dark:placeholder-teal-300 border border-blue-300 dark:border-teal-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-teal-400 transition duration-200"
                         placeholder="photo"
-                        type="text"
+                        type="file"
                         {...register('photo', { required: true })}
                     />
 

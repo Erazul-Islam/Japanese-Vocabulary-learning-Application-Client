@@ -10,6 +10,13 @@ import Tutorials from './pages/tutorials/Tutorials'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
 import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute'
+import AdminDashboard from './pages/dashboard/AdminDashboard/AdminDashboard'
+import LessonManagement from './pages/dashboard/AdminDashboard/LessonManagement'
+import AddLesson from './pages/dashboard/AdminDashboard/AddLesson'
+import UserManagement from './pages/dashboard/AdminDashboard/UserManagement'
+import VocabularyManagement from './pages/dashboard/AdminDashboard/VocabularyManagement'
+import AddVocabulary from './pages/dashboard/AdminDashboard/AddVocabulary'
+import ViewManagingLesson from './pages/dashboard/AdminDashboard/ViewManagingLesson'
 
 
 const router = createBrowserRouter([
@@ -40,42 +47,38 @@ const router = createBrowserRouter([
       },
     ]
   },
-  // {
-  //   path: '/admin/dashboard',
-  //   element: <ProtectedRoute>
-  //     <AdminDashBoard />
-  //   </ProtectedRoute>,
-  //   children: [
-  //     {
-  //       path: '/admin/dashboard/admin-profile',
-  //       element: <AdminProfile />
-  //     },
-  //     {
-  //       path: '/admin/dashboard/bike-management',
-  //       element: <BikeManagement />
-  //     },
-  //     {
-  //       path: '/admin/dashboard/user-management',
-  //       element: <UserManagement />
-  //     },
-  //     {
-  //       path: '/admin/dashboard/return',
-  //       element: <ReturnBike />
-  //     },
-  //     {
-  //       path: '/admin/dashboard/cart',
-  //       element: <Cart />
-  //     },
-  //     {
-  //       path: '/admin/dashboard/chart',
-  //       element: <LineChart />
-  //     },
-  //     {
-  //       path: '/admin/dashboard/coupon-management',
-  //       element: <Coupon />
-  //     }
-  //   ]
-  // },
+  {
+    path: '/admin/dashboard',
+    element: <ProtectedRoute>
+      <AdminDashboard />
+    </ProtectedRoute>,
+    children: [
+      {
+        path: '/admin/dashboard/lesson-management',
+        element: <LessonManagement />
+      },
+      {
+        path: '/admin/dashboard/lesson-add',
+        element: <AddLesson />
+      },
+      {
+        path: '/admin/dashboard/user-management',
+        element: <UserManagement />
+      },
+      {
+        path: '/admin/dashboard/vocabulary-management',
+        element: <VocabularyManagement />
+      },
+      {
+        path: '/admin/dashboard/view-and-management-lesson',
+        element: <ViewManagingLesson />
+      },
+      {
+        path: '/admin/dashboard/add-vocabulary',
+        element: <AddVocabulary />
+      },
+    ]
+  },
   // {
   //   path: '/user/dashboard',
   //   element: <ProtectedRoute><UserDashBoard /></ProtectedRoute>,
