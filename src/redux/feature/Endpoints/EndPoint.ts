@@ -38,6 +38,13 @@ const authApi = baseApi.injectEndpoints({
                 method: 'DELETE'
             })
         }),
+        createLesson: builder.mutation({
+            query: (newLesson) => ({
+                url: 'lession',
+                method: 'POST',
+                body: newLesson
+            })
+        }),
     }),
 });
 
@@ -47,5 +54,6 @@ export const {
     useGetAllLessonsQuery,
     useGetAllUsersQuery,
     useUpdateUserRoleIntoAdminMutation,
-    useDeleteUserMutation
+    useDeleteUserMutation,
+    useCreateLessonMutation
 } = authApi
