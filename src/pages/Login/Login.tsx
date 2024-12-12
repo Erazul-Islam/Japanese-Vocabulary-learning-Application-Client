@@ -2,7 +2,6 @@ import { Link, useNavigate, } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { useLoginMutation } from '../../redux/feature/auth/authApi';
 import { FieldValues, useForm } from "react-hook-form"
-// import "./Style.css"
 
 
 import { Button, notification } from 'antd';

@@ -1,8 +1,8 @@
-import { Button, Form, Input, notification, Table, Tag } from "antd"
+import { Breakpoint, Button, Form, Input, notification, Table, Tag } from "antd"
 import { useAppSelector } from "../../../redux/hook"
 import { RootState } from "../../../redux/store"
 import {  useGetAllLessonsQuery } from "../../../redux/feature/Endpoints/EndPoint"
-import { IVocabulary } from "../../../utils/global"
+import { IVocabulary, TLession } from "../../../utils/global"
 import axios from "axios"
 import { useCurrentToken } from "../../../redux/feature/auth/auth.slice"
 
@@ -19,7 +19,7 @@ const AddVocabulary = () => {
     const handleAddVocabulary = async (lessonId: string, values: IVocabulary) => {
         console.log(lessonId)
         try {
-            const res = await axios.post(`http://localhost:5000/api/lession/${lessonId}/add-vocabulary`, {
+            const res = await axios.post(`https://backend-psi-six-59.vercel.app/api/lession/${lessonId}/add-vocabulary`, {
                 vocabulary: [
                     {
                         word: values.word,
@@ -60,27 +60,27 @@ const AddVocabulary = () => {
             title: 'Lesson Name',
             dataIndex: 'LessionName',
             key: 'LessionName',
-            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as Breakpoint[],
         },
         {
             title: 'Lesson Number',
             dataIndex: 'LessionNumber',
             key: 'LessionNumber',
             render: (LessionNumber: number) => <Tag color="cyan">{LessionNumber}</Tag>,
-            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as Breakpoint[],
         },
         {
             title: 'Vocabulary Count',
             dataIndex: 'vocabulary',
             key: 'vocabulary',
             render: (vocabulary: string[]) => vocabulary.length === 0 ? <Tag color="red">{0}</Tag> : <Tag color="green">{vocabulary.length}</Tag>,
-            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as Breakpoint[],
         },
         {
             title: 'Add Lesson',
             key: 'actions',
-            responsive: ['xs', 'sm', 'md', 'lg'] as ('xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl')[],
-            render: (_, record) => (
+            responsive: ['xs', 'sm', 'md', 'lg'] as ('xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl') [] ,
+            render: (_ : unknown, record : TLession) => (
                 <div className="flex gap-2">
                     <Button
                         className=' bg-purple-600 text-white border-none'
@@ -166,7 +166,6 @@ const AddVocabulary = () => {
                 columns={columns}
                 rowKey="_id"
                 pagination={{ pageSize: 5 }}
-                responsive
                 loading={lessonsLoading}
                 scroll={{ x: true }}
             />

@@ -1,10 +1,11 @@
-import { Button, Input, InputNumber, Table, Tag, Form, Modal, notification } from "antd";
+import { Button, Input, InputNumber, Table, Tag, Form, Modal, notification, Breakpoint } from "antd";
 import { useDeleteLessonMutation, useGetAllLessonsQuery, } from "../../../redux/feature/Endpoints/EndPoint";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { useAppSelector } from "../../../redux/hook";
 import { useCurrentToken } from "../../../redux/feature/auth/auth.slice";
 import axios from "axios";
+import { TLession } from "../../../utils/global";
 
 
 const LessonManagement = () => {
@@ -12,7 +13,7 @@ const LessonManagement = () => {
     const { data, refetch } = useGetAllLessonsQuery(null);
     const [deleteLesson] = useDeleteLessonMutation()
     const [isModalVisible, setIsModalVisible] = useState(false)
-    const [lessonId, setLessonId] = useState()
+    const [lessonId, setLessonId] = useState<string>()
     const token = useAppSelector(useCurrentToken);
 
     const handleDelete = (_id: string) => {
@@ -50,10 +51,10 @@ const LessonManagement = () => {
         setIsModalVisible(false);
     };
 
-    const handleUpdateSubmit = async (value: any) => {
+    const handleUpdateSubmit = async (value: TLession) => {
         try {
             const res = await axios.put(
-                `http://localhost:5000/api/lession/${lessonId}`,
+                `https://backend-psi-six-59.vercel.app/api/lession/${lessonId}`,
                 {
                     ...value
                 },
@@ -85,41 +86,41 @@ const LessonManagement = () => {
             title: 'Lesson Name',
             dataIndex: 'LessionName',
             key: 'LessionName',
-            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as Breakpoint[],
         },
         {
             title: 'Lesson Number',
             dataIndex: 'LessionNumber',
             key: 'LessionNumber',
             render: (LessionNumber: number) => <Tag color="cyan">{LessionNumber}</Tag>,
-            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as Breakpoint[],
         },
         {
             title: 'Vocabulary Count',
             dataIndex: 'vocabulary',
             key: 'vocabulary',
             render: (vocabulary: string[]) => vocabulary.length === 0 ? <Tag color="red">{0}</Tag> : <Tag color="green">{vocabulary.length}</Tag>,
-            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as Breakpoint[],
         },
         {
             title: 'Created At',
             dataIndex: 'createdAt',
             key: 'createdAt',
             render: (text: string) => new Date(text).toLocaleString(),
-            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as Breakpoint[],
         },
         {
             title: 'Updated At',
             dataIndex: 'updatedAt',
             key: 'updatedAt',
             render: (text: string) => new Date(text).toLocaleString(),
-            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as Breakpoint[],
         },
         {
             title: 'Delete Lesson',
             key: 'actions',
             responsive: ['xs', 'sm', 'md', 'lg'] as ('xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl')[],
-            render: (_, record) => (
+            render: (_ : unknown, record : TLession) => (
                 <div className="flex gap-2">
                     <Button
                         className=' bg-red-700 text-white border-none'
@@ -134,7 +135,7 @@ const LessonManagement = () => {
             title: 'Update Lesson',
             key: 'actions',
             responsive: ['xs', 'sm', 'md', 'lg'] as ('xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl')[],
-            render: (_, record) => (
+            render: (_ : unknown, record : TLession) => (
                 <div className="flex gap-2">
                     <Button
                         className="bg-purple-500 text-white border-none"
@@ -154,7 +155,6 @@ const LessonManagement = () => {
                 columns={columns}
                 rowKey="_id"
                 pagination={{ pageSize: 5 }}
-                responsive
                 scroll={{ x: true }}
             />
             <Modal

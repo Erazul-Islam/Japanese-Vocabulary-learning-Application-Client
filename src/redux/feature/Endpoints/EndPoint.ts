@@ -1,4 +1,4 @@
-import { TLession, TResponseRedux } from "../../../utils/global";
+import { ITutorial, TLession, TResponseRedux } from "../../../utils/global";
 import { baseApi } from "../../api/baseApi";
 import { TUser } from "../auth/auth.slice";
 
@@ -18,7 +18,7 @@ const authApi = baseApi.injectEndpoints({
             query: () => {
                 return { url: '/tutorial', method: 'GET' };
             },
-            transformResponse: (response: TResponseRedux<TLession[]>) => {
+            transformResponse: (response: TResponseRedux<ITutorial[]>) => {
                 return {
                     data: response.data
                 };

@@ -5,13 +5,16 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useAppSelector } from "../../../redux/hook";
 import { useCurrentToken } from "../../../redux/feature/auth/auth.slice";
+import { IVocabulary, TLession } from "../../../utils/global";
+import { ColumnType } from "antd/es/table";
+
 
 const { Option } = Select;
 
 const VocabularyManagement = () => {
     const { data, refetch } = useGetAllLessonsQuery(null);
-    const [filteredData, setFilteredData] = useState([]);
-    const [filterLessonNo, setFilterLessonNo] = useState(null);
+    const [filteredData, setFilteredData] = useState<IVocabulary[]>([]);
+    const [filterLessonNo, setFilterLessonNo] = useState(0);
     const [deleteVocabulary] = useDeleteVocabularyMutation()
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [currentVocabulary, setCurrentVocabulary] = useState(null);
@@ -21,7 +24,7 @@ const VocabularyManagement = () => {
     const token = useAppSelector(useCurrentToken);
 
 
-    const vocabularies = data?.data?.map(lesson => ({
+    const vocabularies  = data?.data?.map((lesson : TLession) => ({
         lessonId: lesson._id,
         vocabulary: lesson.vocabulary,
     })).flatMap(lesson => lesson.vocabulary) || [];
@@ -69,7 +72,7 @@ const VocabularyManagement = () => {
     };
 
 
-    const handleUpdate = async (values) => {
+    const handleUpdate = async (values : IVocabulary) => {
 
         try {
             const res = await axios.put(
@@ -102,7 +105,7 @@ const VocabularyManagement = () => {
 
 
 
-    const handleFilterChange = (value) => {
+    const handleFilterChange = (value: number) => {
         setFilterLessonNo(value);
         if (value) {
             setFilteredData(vocabularies?.filter((vocab) => vocab.lessonNo === value));
@@ -111,7 +114,7 @@ const VocabularyManagement = () => {
         }
     };
 
-    const columns = [
+    const columns : ColumnType<IVocabulary>[] = [
         {
             title: "Word",
             dataIndex: "word",
@@ -121,7 +124,7 @@ const VocabularyManagement = () => {
             title: "Meaning",
             dataIndex: "meaning",
             key: "meaning",
-            render: (_, record) => (
+            render: (_ : unknown, record : IVocabulary) => (
                 <span>{record.whenToSay}</span>
             ),
         },
@@ -143,11 +146,11 @@ const VocabularyManagement = () => {
         {
             title: "Actions",
             key: "actions",
-            render: (_, record) => {
+            render: (_ : unknown, record : IVocabulary) => {
                 const lesson = data?.data?.find((lesson) =>
                     lesson.vocabulary.some((vocab) => vocab._id === record._id)
                 );
-                const lessonId = lesson?._id;
+                const lessonId = lesson?._id as string;
 
                 return (
                     <Space>
@@ -177,7 +180,7 @@ const VocabularyManagement = () => {
                 </Select>
             </Space>
 
-            <Table
+            <Table 
                 columns={columns}
                 dataSource={filterLessonNo ? filteredData : vocabularies}
                 rowKey="_id"
@@ -195,7 +198,7 @@ const VocabularyManagement = () => {
                     form={form}
                     layout="vertical"
                     onFinish={handleUpdate}
-                    initialValues={currentVocabulary}
+                    initialValues={ currentVocabulary ?? undefined}
                 >
                     <Form.Item
                         label="Word"

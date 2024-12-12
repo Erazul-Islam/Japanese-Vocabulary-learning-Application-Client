@@ -1,4 +1,4 @@
-import { Button, Input, Table, Form, notification } from "antd";
+import { Button, Input, Table, Form, notification, Breakpoint } from "antd";
 import { useCreateTutorialMutation, useDeleteTutorialMutation, useGetAllTutorialQuery } from "../../../redux/feature/Endpoints/EndPoint";
 import Swal from "sweetalert2";
 
@@ -66,14 +66,14 @@ const TutorailManagement = () => {
             title: 'Tutorail Link',
             dataIndex: 'Link',
             key: 'LessionName',
-            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as Breakpoint[],
         },
 
         {
             title: 'Delete Tutorial',
             key: 'actions',
             responsive: ['xs', 'sm', 'md', 'lg'] as ('xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl')[],
-            render: (_, record) => (
+            render: (_ : unknown, record: { _id: string; }) => (
                 <div className="flex gap-2">
                     <Button
                         className=' bg-red-700 text-white border-none'
@@ -95,7 +95,6 @@ const TutorailManagement = () => {
                     columns={columns}
                     rowKey="_id"
                     pagination={{ pageSize: 5 }}
-                    responsive
                     scroll={{ x: true }}
                 />
             </div>

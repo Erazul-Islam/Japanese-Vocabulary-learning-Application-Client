@@ -2,6 +2,7 @@ import { Button, notification, Table, Tag } from "antd";
 import { useDeleteUserMutation, useGetAllUsersQuery } from "../../../redux/feature/Endpoints/EndPoint"
 import axios from "axios";
 import Swal from "sweetalert2";
+import { TUser } from "../../../utils/global";
 
 
 const UserManagement = () => {
@@ -9,8 +10,8 @@ const UserManagement = () => {
     const { data, refetch } = useGetAllUsersQuery(null)
     const [deleteUser] = useDeleteUserMutation()
 
-    const handleAdmin = (user: string) => {
-        axios.put(`http://localhost:5000/api/auth/${user?._id}`)
+    const handleAdmin = (user: TUser) => {
+        axios.put(`https://backend-psi-six-59.vercel.app/api/auth/${user?._id}`)
             .then(res => {
                 console.log(res.data)
                 if (res.data.success === true) {
@@ -22,8 +23,8 @@ const UserManagement = () => {
                 }
             })
     }
-    const handleUser = (user: string) => {
-        axios.patch(`http://localhost:5000/api/auth/${user?._id}`)
+    const handleUser = (user: TUser) => {
+        axios.patch(`https://backend-psi-six-59.vercel.app/api/auth/${user?._id}`)
             .then(res => {
                 console.log(res.data)
                 if (res.data.success === true) {
@@ -104,7 +105,7 @@ const UserManagement = () => {
             title: 'Delete User',
             key: 'actions',
             responsive: ['xs', 'sm', 'md', 'lg'] as ('xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl')[],
-            render: (_, record) => (
+            render: (_ : unknown, record : TUser) => (
                 <div className="flex gap-2">
                     <Button
                         className=' bg-red-700 text-white border-none'
@@ -119,7 +120,7 @@ const UserManagement = () => {
             title: 'Update Role',
             key: 'actions',
             responsive: ['xs', 'sm', 'md', 'lg'] as ('xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl')[],
-            render: (_, record) => (
+            render: (_ :unknown, record : TUser) => (
                 <div className="flex gap-2">
                     {record.role === 'ADMIN' ? (
                         <Button onClick={() => handleUser(record)} className=' bg-purple-800 text-white border-none' >
