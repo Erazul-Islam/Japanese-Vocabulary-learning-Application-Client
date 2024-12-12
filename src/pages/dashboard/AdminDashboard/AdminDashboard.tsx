@@ -41,6 +41,12 @@ const AdminDashboard: React.FC = () => {
                     <Menu.Item key="add-vocabulary" icon={<LogoutOutlined />}>
                         <Link to="/admin/dashboard/add-vocabulary">Add Vocabulayry</Link>
                     </Menu.Item>
+                    <Menu.Item key="/tutorial-management" icon={<LogoutOutlined />}>
+                        <Link to="/admin/dashboard/tutorial-management">Tutorail Management</Link>
+                    </Menu.Item>
+                    <Menu.Item key="/lesson" icon={<LogoutOutlined />}>
+                        <Link to="/lessions">Go Lesson</Link>
+                    </Menu.Item>
                 </Menu>
             </Sider>
             <Layout>

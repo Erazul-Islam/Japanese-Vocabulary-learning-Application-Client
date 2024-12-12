@@ -33,35 +33,30 @@ const Navbar: React.FC = () => {
   ];
 
   const adminItems = [
-    { key: "admin/dashboard", label: "Dashboard" },
-    // { key: "admin/dashboard/lesson-management", label: "Lesson" },
-  ];
-
-  const userItems = [
-    { key: "user/profile", label: "User Profile" },
-  ];
+    { key: "admin/dashboard/lesson-management", label: "Dashboard" },
+  ]
 
   const menuItems = user?.role === "ADMIN"
     ? [...commonItems, ...adminItems]
-    : [...commonItems, ...userItems];
+    : [...commonItems];
 
 
   return (
-    <nav className="bg-white ">
+    <nav style={{ backgroundColor: '#001529', color: 'white' }} className="bg-[#001529] text-white">
       <div className="container mx-auto px-4 flex justify-between items-center h-16">
 
-        <div className="text-xl font-bold text-indigo-600">MyLogo</div>
+        <img className="w-10 h-10 rounded-full" src="https://i.ibb.co.com/q5svZgw/DALL-E-2024-12-12-18-16-58-An-aesthetic-logo-design-for-a-Japanese-language-learning-website-The-log.webp" alt="" />
         <Menu
-          mode="horizontal"
-          className="hidden md:flex"
+          style={{ backgroundColor: '#001529', color: 'white' }}
+          className="hidden  md:flex"
           items={menuItems.map((item) => ({
             key: item.key,
-            label: <Link to={`/${item.key}`}>{item.label}</Link>,
+            label: <Link style={{ color: "white" }} to={`/${item.key}`}>{item.label}</Link>,
           }))}
         />
 
         <div>
-          {user ? <div className='cursor-pointer' onClick={handleLogout}>Logout</div> : <Link color="foreground" to="/login">
+          {user ? <div className='cursor-pointer text-white' onClick={handleLogout}>Logout</div> : <Link color="white" to="/login">
             Login
           </Link>}
         </div>
@@ -78,11 +73,11 @@ const Navbar: React.FC = () => {
         title="Menu"
         placement="right"
         onClose={closeDrawer}
-        visible={visible}
+        open={visible}
         className="md:hidden"
       >
         <Menu
-          mode="vertical"
+          mode="inline"
           items={menuItems.map((item) => ({
             key: item.key,
             label: <Link to={`/${item.key}`}>{item.label}</Link>,

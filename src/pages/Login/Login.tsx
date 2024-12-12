@@ -1,17 +1,26 @@
-import { Link,  } from 'react-router-dom';
-import { useAppDispatch } from '../../redux/hook';
+import { Link, useNavigate, } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { useLoginMutation } from '../../redux/feature/auth/authApi';
 import { FieldValues, useForm } from "react-hook-form"
 // import "./Style.css"
 
 
 import { Button, notification } from 'antd';
-import { setUser } from '../../redux/feature/auth/auth.slice';
+import { setUser, useCurrentToken } from '../../redux/feature/auth/auth.slice';
+import { verifyToken } from '../../utils/verifyToken';
 
 const Login = () => {
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const { register, handleSubmit } = useForm();
+    const token = useAppSelector(useCurrentToken);
+    let user;
+
+    if (token) {
+        user = verifyToken(token);
+    }
+
+    console.log(user)
 
     const [login] = useLoginMutation()
 
@@ -25,13 +34,18 @@ const Login = () => {
             }
             const res = await login(userInfo).unwrap()
             console.log(res)
-            // const { data: user } = res
             dispatch(setUser({ user: res.data, token: res.token }))
+            const decodedUser = verifyToken(res.token);
             notification.success({
                 message: "Log in !!",
-                description: "You successfully logged in"
-            })
-            
+                description: "You successfully logged in",
+            });
+            if (decodedUser.role === "ADMIN") {
+                navigate("/admin/dashboard/lesson-management")
+            } else {
+                navigate("/lessions");
+            }
+
         } catch {
             notification.error({
                 message: "Something went wrong",

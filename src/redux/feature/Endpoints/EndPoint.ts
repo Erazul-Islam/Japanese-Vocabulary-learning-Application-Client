@@ -14,6 +14,16 @@ const authApi = baseApi.injectEndpoints({
                 };
             },
         }),
+        getAllTutorial: builder.query({
+            query: () => {
+                return { url: '/tutorial', method: 'GET' };
+            },
+            transformResponse: (response: TResponseRedux<TLession[]>) => {
+                return {
+                    data: response.data
+                };
+            },
+        }),
         getAllUsers: builder.query({
             query: () => {
                 return { url: '/auth/all-profile', method: 'GET' };
@@ -71,6 +81,19 @@ const authApi = baseApi.injectEndpoints({
                 body: vocabulary
             })
         }),
+        createTutorial: builder.mutation({
+            query: (tutorial) => ({
+                url: `tutorial`,
+                method: 'POST',
+                body: tutorial
+            })
+        }),
+        deleteTutorial: builder.mutation({
+            query: (id) => ({
+                url: `tutorial/${id}`,
+                method: 'DELETE',
+            })
+        }),
     }),
 });
 
@@ -85,5 +108,8 @@ export const {
     useDeleteLessonMutation,
     useUpdateLessonMutation,
     useCreateVocabularyMutation,
-    useDeleteVocabularyMutation
+    useDeleteVocabularyMutation,
+    useCreateTutorialMutation,
+    useGetAllTutorialQuery,
+    useDeleteTutorialMutation
 } = authApi

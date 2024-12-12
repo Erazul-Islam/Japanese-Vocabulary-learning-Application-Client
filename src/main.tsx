@@ -18,13 +18,13 @@ import VocabularyManagement from './pages/dashboard/AdminDashboard/VocabularyMan
 import AddVocabulary from './pages/dashboard/AdminDashboard/AddVocabulary'
 import ViewManagingLesson from './pages/dashboard/AdminDashboard/ViewManagingLesson'
 import LessonDetail from './pages/lessions/LessonDetail'
+import TutorailManagement from './pages/dashboard/AdminDashboard/TutorailManagement'
 
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root></Root>,
-    // errorElement: <Error />,
     children: [
       {
         path: '/lessions',
@@ -83,6 +83,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/dashboard/add-vocabulary',
         element: <AddVocabulary />
+      },
+      {
+        path: '/admin/dashboard/tutorial-management',
+        element: <TutorailManagement />
       },
     ]
   },
