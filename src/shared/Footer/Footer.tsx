@@ -21,10 +21,10 @@ const FooterLayout = () => {
                     <Col xs={24} sm={12} md={8}>
                         <Title level={4} style={{ color: "#fff" }}>Quick Links</Title>
                         <Space direction="vertical">
-                            <a href="/" style={{ color: "#ccc" }}>Home</a>
-                            <a href="/about" style={{ color: "#ccc" }}>About</a>
-                            <a href="/services" style={{ color: "#ccc" }}>Services</a>
-                            <a href="/contact" style={{ color: "#ccc" }}>Contact</a>
+                            <div  style={{ color: "#ccc" }}>About</div>
+                            <div  style={{ color: "#ccc" }}>Services</div>
+                            <div  style={{ color: "#ccc" }}>Contact</div>
+                            <div  style={{ color: "#ccc" }}>Testimonial</div>
                         </Space>
                     </Col>
 

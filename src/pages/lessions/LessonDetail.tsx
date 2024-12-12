@@ -47,11 +47,11 @@ const LessonDetail = () => {
 
     return (
         <div>
-            <div className="p-6">
+            <div className="mt-16 mb-16">
                 <h2 className="text-2xl font-bold text-center mb-6">{lesson?.LessionName} - Vocabulary</h2>
                 {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
                 {vocabulary && vocabulary.length > 0 ? (
-                    <div className="flex flex-col items-center gap-6">
+                    <div className="flex flex-col mt-8 items-center gap-6">
                         <div className="text-center">
                             <h3
                                 onClick={() => playPronunciation(vocabulary[currentIndex]?.word)}

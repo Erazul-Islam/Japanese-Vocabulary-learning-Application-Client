@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Menu, Drawer, Button } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { logout, useCurrentToken } from "../../redux/feature/auth/auth.slice";
 import { verifyToken } from "../../utils/verifyToken";
 
 const Navbar: React.FC = () => {
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate()
 
   const dispatch = useAppDispatch();
 
@@ -22,7 +23,11 @@ const Navbar: React.FC = () => {
     user = verifyToken(token);
   }
 
-  console.log(user)
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
 
   const showDrawer = () => setVisible(true);
   const closeDrawer = () => setVisible(false);
@@ -51,7 +56,7 @@ const Navbar: React.FC = () => {
           className="hidden  md:flex"
           items={menuItems.map((item) => ({
             key: item.key,
-            label: <Link style={{ color: "white" }} to={`/${item.key}`}>{item.label}</Link>,
+            label: <Link style={{ color: "white", }} to={`/${item.key}`}>{item.label}</Link>,
           }))}
         />
 

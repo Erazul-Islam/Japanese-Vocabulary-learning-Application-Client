@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Table, Button, Space, Select, message, Form, Modal, Input } from "antd";
+import { Table, Button, Space, Select, message, Form, Modal, Input, notification } from "antd";
 import { useDeleteVocabularyMutation, useGetAllLessonsQuery } from "../../../redux/feature/Endpoints/EndPoint";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -24,7 +24,7 @@ const VocabularyManagement = () => {
     const token = useAppSelector(useCurrentToken);
 
 
-    const vocabularies  = data?.data?.map((lesson : TLession) => ({
+    const vocabularies = data?.data?.map((lesson: TLession) => ({
         lessonId: lesson._id,
         vocabulary: lesson.vocabulary,
     })).flatMap(lesson => lesson.vocabulary) || [];
@@ -41,6 +41,7 @@ const VocabularyManagement = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 try {
+                    setFilteredData(filteredData.filter((vocab) => vocab._id !== vocabularyId))
                     deleteVocabulary({ id, vocabularyId })
                         .unwrap()
                         .then(() => {
@@ -72,11 +73,12 @@ const VocabularyManagement = () => {
     };
 
 
-    const handleUpdate = async (values : IVocabulary) => {
+    const handleUpdate = async (values: IVocabulary) => {
 
         try {
+            
             const res = await axios.put(
-                `http://localhost:5000/api/lession/${currentLessontId}/vocabulary/${currentVocabularytId}`,
+                `https://backend-psi-six-59.vercel.app/api/lession/${currentLessontId}/vocabulary/${currentVocabularytId}`,
                 {
                     vocabulary: [
                         {
@@ -95,7 +97,10 @@ const VocabularyManagement = () => {
             );
             console.log(res)
             refetch();
-            message.success("Vocabulary updated successfully!");
+            notification.success({
+                message : "Great",
+                description : "Vocabulary updated successfully!"
+            });
             handleCancel();
         } catch (error) {
             console.error("Update failed:", error);
@@ -114,7 +119,7 @@ const VocabularyManagement = () => {
         }
     };
 
-    const columns : ColumnType<IVocabulary>[] = [
+    const columns: ColumnType<IVocabulary>[] = [
         {
             title: "Word",
             dataIndex: "word",
@@ -124,7 +129,7 @@ const VocabularyManagement = () => {
             title: "Meaning",
             dataIndex: "meaning",
             key: "meaning",
-            render: (_ : unknown, record : IVocabulary) => (
+            render: (_: unknown, record: IVocabulary) => (
                 <span>{record.whenToSay}</span>
             ),
         },
@@ -146,7 +151,7 @@ const VocabularyManagement = () => {
         {
             title: "Actions",
             key: "actions",
-            render: (_ : unknown, record : IVocabulary) => {
+            render: (_: unknown, record: IVocabulary) => {
                 const lesson = data?.data?.find((lesson) =>
                     lesson.vocabulary.some((vocab) => vocab._id === record._id)
                 );
@@ -155,7 +160,7 @@ const VocabularyManagement = () => {
                 return (
                     <Space>
                         <Button onClick={() => handleEdit(lessonId, record._id)} type="primary">Update</Button>
-                        <Button onClick={() => handleDelete(lessonId, record._id)} type="primary">Delete</Button>
+                        <Button onClick={() => handleDelete(lessonId, record._id)} type="dashed">Delete</Button>
                     </Space>
                 );
             }
@@ -180,7 +185,7 @@ const VocabularyManagement = () => {
                 </Select>
             </Space>
 
-            <Table 
+            <Table
                 columns={columns}
                 dataSource={filterLessonNo ? filteredData : vocabularies}
                 rowKey="_id"
@@ -198,7 +203,7 @@ const VocabularyManagement = () => {
                     form={form}
                     layout="vertical"
                     onFinish={handleUpdate}
-                    initialValues={ currentVocabulary ?? undefined}
+                    initialValues={currentVocabulary ?? undefined}
                 >
                     <Form.Item
                         label="Word"

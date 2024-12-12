@@ -5,6 +5,11 @@ import {
     DashboardOutlined,
     SettingOutlined,
     LogoutOutlined,
+    BorderLeftOutlined,
+    PlusOutlined,
+    ClockCircleOutlined,
+    RadiusSettingOutlined,
+    RadarChartOutlined,
 } from "@ant-design/icons";
 import { Link, Outlet } from "react-router-dom";
 import { RootState } from "../../../redux/store";
@@ -32,19 +37,19 @@ const AdminDashboard: React.FC = () => {
                     <Menu.Item key="Manage" icon={<LogoutOutlined />}>
                         <Link to="/admin/dashboard/user-management">Manage Users</Link>
                     </Menu.Item>
-                    <Menu.Item key="Vocabulary-Manage" icon={<LogoutOutlined />}>
+                    <Menu.Item key="Vocabulary-Manage" icon={<BorderLeftOutlined /> }>
                         <Link to="/admin/dashboard/vocabulary-management">Vocabulary Management</Link>
                     </Menu.Item>
-                    <Menu.Item key="lesson" icon={<LogoutOutlined />}>
+                    <Menu.Item key="lesson" icon={<ClockCircleOutlined />}>
                         <Link to="/admin/dashboard/view-and-management-lesson">Lesson</Link>
                     </Menu.Item>
-                    <Menu.Item key="add-vocabulary" icon={<LogoutOutlined />}>
+                    <Menu.Item key="add-vocabulary" icon={<PlusOutlined />}>
                         <Link to="/admin/dashboard/add-vocabulary">Add Vocabulayry</Link>
                     </Menu.Item>
-                    <Menu.Item key="/tutorial-management" icon={<LogoutOutlined />}>
+                    <Menu.Item key="/tutorial-management" icon={<RadiusSettingOutlined />}>
                         <Link to="/admin/dashboard/tutorial-management">Tutorail Management</Link>
                     </Menu.Item>
-                    <Menu.Item key="/lesson" icon={<LogoutOutlined />}>
+                    <Menu.Item key="/lesson" icon={<RadarChartOutlined />}>
                         <Link to="/lessions">Go Lesson</Link>
                     </Menu.Item>
                 </Menu>

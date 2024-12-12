@@ -59,8 +59,6 @@ const AddLesson = () => {
                     >
                         <Input type="number" placeholder="Enter lesson number" />
                     </Form.Item>
-
-                    {/* Submit Button */}
                     <Form.Item>
                         <Button
                             type="primary"
