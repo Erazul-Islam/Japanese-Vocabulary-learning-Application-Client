@@ -58,10 +58,10 @@ const authApi = baseApi.injectEndpoints({
             })
         }),
         updateLesson: builder.mutation({
-            query: ({ LessonlId, data }) => ({
-                url: `lession/${LessonlId}`,
+            query: ({ LessonId, data }) => ({
+                url: `lession/${LessonId}`,
                 method: 'PUT',
-                body: { data }
+                body:  data 
             })
         }),
         createVocabulary: builder.mutation({

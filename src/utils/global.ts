@@ -18,11 +18,15 @@ export type TResponse<T> = {
     message: string;
 };
 export type TLession = {
+    _id : string
     LessionName : string,
     LessionNumber : number,
+    vocabularyCount : number
+    vocabulary : IVocabulary[]
 }
 
 export interface IVocabulary {
+    _id : string
     word: string;
     pronunciation: string; 
     whenToSay: string; 
@@ -43,6 +47,8 @@ export interface TUser {
     updatedAt: Date,
     role: 'ADMIN' | 'USER'
 };
+
+
   
 
 export type TResponseRedux<T> = TResponse<T> & BaseQueryApi;

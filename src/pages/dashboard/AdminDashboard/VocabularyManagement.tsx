@@ -57,10 +57,8 @@ const VocabularyManagement = () => {
     };
 
     const handleEdit = (lessonId: string, vocabularyId: string) => {
-        // const vocabulary = vocabularies.find((vocab) => vocab._id === vocabularyId);
         setCurrentLessonId(lessonId);
         setCurrentVocabularyId(vocabularyId);
-        // setCurrentVocabulary(vocabulary);
         setIsModalVisible(true);
     };
 
@@ -185,7 +183,6 @@ const VocabularyManagement = () => {
                 rowKey="_id"
                 scroll={{ x: true }}
             />
-
             <Modal
                 title="Update Vocabulary"
                 open={isModalVisible}

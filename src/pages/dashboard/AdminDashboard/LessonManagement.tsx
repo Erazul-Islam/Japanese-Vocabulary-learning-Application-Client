@@ -1,17 +1,19 @@
-import { Button, Input, InputNumber, Table, Tag,Form, Modal } from "antd";
-import { useDeleteLessonMutation, useGetAllLessonsQuery, useUpdateLessonMutation } from "../../../redux/feature/Endpoints/EndPoint";
+import { Button, Input, InputNumber, Table, Tag, Form, Modal, notification } from "antd";
+import { useDeleteLessonMutation, useGetAllLessonsQuery, } from "../../../redux/feature/Endpoints/EndPoint";
 import Swal from "sweetalert2";
 import { useState } from "react";
+import { useAppSelector } from "../../../redux/hook";
+import { useCurrentToken } from "../../../redux/feature/auth/auth.slice";
+import axios from "axios";
 
 
 const LessonManagement = () => {
 
-
     const { data, refetch } = useGetAllLessonsQuery(null);
     const [deleteLesson] = useDeleteLessonMutation()
-    const [updateLesson] = useUpdateLessonMutation()
     const [isModalVisible, setIsModalVisible] = useState(false)
-    const [currentLesson, setCurrentLesson] = useState(null)
+    const [lessonId, setLessonId] = useState()
+    const token = useAppSelector(useCurrentToken);
 
     const handleDelete = (_id: string) => {
         Swal.fire({
@@ -39,39 +41,43 @@ const LessonManagement = () => {
         });
     }
 
-    const handleUpdate = (lesson: any) => {
-        console.log(lesson)
-        setCurrentLesson(lesson);
+    const handleUpdate = (id: string) => {
+        setLessonId(id)
         setIsModalVisible(true);
     };
 
     const handleCancel = () => {
         setIsModalVisible(false);
-        setCurrentLesson(null);
     };
 
-    const handleUpdateSubmit = (values: any) => {
-        const { LessionName, LessionNumber } = values;
-        const res = updateLesson({ _id: currentLesson?._id, LessionName, LessionNumber })
-            .then(() => {
-                refetch();
-                Swal.fire({
-                    title: "Updated!",
-                    text: "Lesson updated successfully",
-                    icon: "success",
-                });
-                setIsModalVisible(false);
-                setCurrentLesson(null);
-            })
-            .catch((error) => {
-                Swal.fire({
-                    title: "Error!",
-                    text: "There was an issue updating the lesson",
-                    icon: "error",
-                });
-                console.error(error);
-            });
+    const handleUpdateSubmit = async (value: any) => {
+        try {
+            const res = await axios.put(
+                `http://localhost:5000/api/lession/${lessonId}`,
+                {
+                    ...value
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
             console.log(res)
+            refetch();
+            notification.success({
+                message : "Updated",
+                description : "Lesson updated successfully"
+            });
+            handleCancel();
+        } catch (error) {
+            console.error("Update failed:", error);
+            notification.error({
+                message : "opps",
+                description : "Failed to update Lesson. Please try again."
+            });
+        }
+
     };
 
     const columns = [
@@ -130,14 +136,14 @@ const LessonManagement = () => {
             responsive: ['xs', 'sm', 'md', 'lg'] as ('xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl')[],
             render: (_, record) => (
                 <div className="flex gap-2">
-                  <Button
-                    className="bg-purple-500 text-white border-none"
-                    onClick={() => handleUpdate(record)}
-                  >
-                    Update
-                  </Button>
+                    <Button
+                        className="bg-purple-500 text-white border-none"
+                        onClick={() => handleUpdate(record._id)}
+                    >
+                        Update
+                    </Button>
                 </div>
-              ),
+            ),
         },
     ];
 
@@ -158,23 +164,18 @@ const LessonManagement = () => {
                 footer={null}
             >
                 <Form
-                    initialValues={{
-                        LessionName: currentLesson?.LessionName,
-                        LessionNumber: currentLesson?.LessionNumber,
-                    }}
                     onFinish={handleUpdateSubmit}
                 >
                     <Form.Item
                         label="Lesson Name"
                         name="LessionName"
-                        rules={[{ required: true, message: "Please enter the lesson name!" }]}
+
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
                         label="Lesson Number"
                         name="LessionNumber"
-                        rules={[{ required: true, message: "Please enter the lesson number!" }]}
                     >
                         <InputNumber min={1} />
                     </Form.Item>

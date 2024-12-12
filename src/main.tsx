@@ -17,6 +17,7 @@ import UserManagement from './pages/dashboard/AdminDashboard/UserManagement'
 import VocabularyManagement from './pages/dashboard/AdminDashboard/VocabularyManagement'
 import AddVocabulary from './pages/dashboard/AdminDashboard/AddVocabulary'
 import ViewManagingLesson from './pages/dashboard/AdminDashboard/ViewManagingLesson'
+import LessonDetail from './pages/lessions/LessonDetail'
 
 
 const router = createBrowserRouter([
@@ -29,6 +30,12 @@ const router = createBrowserRouter([
         path: '/lessions',
         element: <ProtectedRoute>
           <Lesson />
+        </ProtectedRoute>
+      },
+      {
+        path: '/lessions/:id',
+        element: <ProtectedRoute>
+          <LessonDetail />
         </ProtectedRoute>
       },
       {
